@@ -6,7 +6,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50), unique=True)
     login = db.Column(db.String(40), unique=True)
-    password = db.Column(db.String(40))
+    password = db.Column(db.String(512))
     wallet = db.Column(db.Float)
     date_reg = db.Column(db.DateTime, default=datetime.utcnow)
     photo = db.Column(db.LargeBinary)
@@ -51,3 +51,33 @@ class Codes(db.Model):
 
     def __repr__(self):
         return f'<code {self.id}>' 
+
+
+class Admin(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(50), unique=True)
+    login = db.Column(db.String(40), unique=True)
+    password = db.Column(db.String(512))
+    date_reg = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'{self.id}'
+
+
+class UserGames(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
+    game_key = db.Column(db.String(25), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f'<usergames {self.id}>'
+
+
+class Basket(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
+
+    def __repr__(self):
+        return f'<basket {self.id}>'
